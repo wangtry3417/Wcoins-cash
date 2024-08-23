@@ -70,7 +70,7 @@ db.get(`SELECT public_key,private_key,balance FROM wallets WHERE public_key = ?`
         balance: row.balance
       };
     }
-}):
+});
 };
 
 module.exports = {
