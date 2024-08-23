@@ -15,7 +15,10 @@ db.run(`
 
 key = wallet.generatePrivateKey()
 pk = wallet.getPublicKey(key)
-console.log(pk)
+console.log("publicKey: "+pk)
+console.log("privateKey: "+key)
+wallet.updateBalance(key,100)
+console.log(wallet.checkWallet())
 
 module.exports = {
   crypto,
