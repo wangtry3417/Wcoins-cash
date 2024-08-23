@@ -30,7 +30,7 @@ const updateBalance = (privateKey, newBalance) => {
 
   // 從資料庫中獲取當前餘額
   let currentBalance = 0;
-  db.get(`SELECT balance FROM balances WHERE public_key = ?`, [publicKey], (err, row) => {
+  db.get(`SELECT balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
     if (err) throw err;
     if (row) {
       currentBalance = row.balance;
@@ -60,9 +60,22 @@ const isValidPrivateKey = (privateKey) => {
   return true;
 };
 
+const checkWallet = (publicKey) => {
+db.get(`SELECT public_key,balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
+    if (err) throw err;
+    if (row) {
+      return {
+        puk: row.public_key,
+        balance: row.balance
+      };
+    }
+}):
+};
+
 module.exports = {
   generatePrivateKey,
   getPublicKey,
   setInitialBalance,
-  updateBalance
+  updateBalance,
+  checkWallet
 };
