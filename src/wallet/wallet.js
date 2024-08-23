@@ -11,7 +11,19 @@ const getPublicKey = (privateKey) => {
   return ec.keyFromPrivate(privateKey).getPublic('hex');
 };
 
+// 設置初始餘額
+const setInitialBalance = (privateKey) => {
+  return 0;
+};
+
+// 更新餘額
+const updateBalance = (privateKey, newBalance) => {
+  publicKey = getPublicKey(privateKey)
+  return newBalance
+};
+
 module.exports = {
   generatePrivateKey,
-  getPublicKey
+  getPublicKey,
+  setInitialBalance
 };
