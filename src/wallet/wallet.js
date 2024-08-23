@@ -1,7 +1,7 @@
 const elliptic = require('elliptic');
 const ec = new elliptic.ec('secp256k1');
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../wch.sqlite');
+const db = new sqlite3.Database('../wch.db');
 
 // 生成私鑰
 const generatePrivateKey = () => {
