@@ -14,7 +14,7 @@ db.run(`
 `);
 
 key = wallet.generatePrivateKey()
-pk = wallet.getWalletKey(key)
+pk = wallet.getPublicKey(key)
 console.log(pk)
 
 module.exports = {
