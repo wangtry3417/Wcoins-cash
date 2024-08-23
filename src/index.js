@@ -8,6 +8,7 @@ const db = new sqlite3.Database('./wch.sqlite');
 db.run(`
   CREATE TABLE IF NOT EXISTS wallets (
     public_key TEXT PRIMARY KEY,
+    private_key TEXT NOT NULL,
     balance DECIMAL(18,8) NOT NULL
   )
 `);
