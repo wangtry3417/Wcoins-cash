@@ -10,7 +10,7 @@ try {
   // 在此處處理錯誤,例如退出程式或嘗試重新連接
 }
 
-// 建立餘額表
+// 建立資料表
 db.run(`
   CREATE TABLE IF NOT EXISTS wallets (
     public_key TEXT PRIMARY KEY,
