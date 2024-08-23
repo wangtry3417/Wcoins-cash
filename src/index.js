@@ -13,6 +13,10 @@ db.run(`
   )
 `);
 
+key = wallet.generatePrivateKey()
+pk = wallet.getWalletKey(key)
+console.log(pk)
+
 module.exports = {
   crypto,
   wallet,
