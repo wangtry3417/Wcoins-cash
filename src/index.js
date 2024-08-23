@@ -1,6 +1,6 @@
-const { sha256 } = require("./crypto/crypto");
+const crypto = require("./crypto/crypto");
 
 
 module.exports = {
-  sha256
+  crypto
 }
