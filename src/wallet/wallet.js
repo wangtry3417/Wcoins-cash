@@ -44,9 +44,9 @@ const updateBalance = (privateKey, newBalance) => {
 
   // 更新餘額
   db.run(`
-    INSERT OR REPLACE INTO wallets (public_key, balance)
-    VALUES (?, ?)
-  `, [publicKey, newBalance], (err) => {
+    INSERT OR REPLACE INTO wallets (public_key, private_key, balance)
+    VALUES (?, ?, ?)
+  `, [publicKey, privateKey,newBalance], (err) => {
     if (err) throw err;
   });
 
@@ -61,11 +61,12 @@ const isValidPrivateKey = (privateKey) => {
 };
 
 const checkWallet = (publicKey) => {
-db.get(`SELECT public_key,balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
+db.get(`SELECT public_key,private_key,balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
     if (err) throw err;
     if (row) {
       return {
         puk: row.public_key,
+        prk: row.private_key,
         balance: row.balance
       };
     }
