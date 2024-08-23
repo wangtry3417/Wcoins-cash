@@ -2,7 +2,7 @@ const crypto = require("./crypto/crypto");
 const wallet = require("./wallet/wallet");
 const address = require("./wallet/address");
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('wch.sqlite');
+const db = new sqlite3.Database('./wch.sqlite');
 
 // 建立餘額表
 db.run(`
