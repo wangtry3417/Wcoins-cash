@@ -3,6 +3,15 @@ const ec = new elliptic.ec('secp256k1');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('../wch.db');
 
+db.run(`
+  CREATE TABLE IF NOT EXISTS wallets (
+    public_key TEXT PRIMARY KEY,
+    private_key TEXT NOT NULL,
+    balance DECIMAL(18,8) NOT NULL
+  )
+`);
+
+
 // 生成私鑰
 const generatePrivateKey = () => {
   return ec.genKeyPair().getPrivate('hex');
