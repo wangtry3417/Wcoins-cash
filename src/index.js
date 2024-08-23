@@ -2,8 +2,9 @@ const crypto = require("./crypto/crypto");
 const wallet = require("./wallet/wallet");
 const address = require("./wallet/address");
 const sqlite3 = require('sqlite3').verbose();
+var db;
 try {
-  const db = new sqlite3.Database('./wch.sqlite');
+  db = new sqlite3.Database('./wch.sqlite');
 } catch (err) {
   console.error('Error opening database:', err);
   // 在此處處理錯誤,例如退出程式或嘗試重新連接
