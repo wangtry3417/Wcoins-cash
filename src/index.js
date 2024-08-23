@@ -24,7 +24,7 @@ pk = wallet.getPublicKey(key)
 console.log("publicKey: "+pk)
 console.log("privateKey: "+key)
 wallet.updateBalance(key,100)
-console.log(wallet.checkWallet())
+console.log(wallet.checkWallet(key))
 
 module.exports = {
   crypto,
