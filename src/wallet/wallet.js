@@ -1,15 +1,6 @@
 const elliptic = require('elliptic');
 const ec = new elliptic.ec('secp256k1');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../wch.db');
-
-db.run(`
-  CREATE TABLE IF NOT EXISTS wallets (
-    public_key TEXT PRIMARY KEY,
-    private_key TEXT NOT NULL,
-    balance DECIMAL(18,8) NOT NULL
-  )
-`);
+const { Client } = require('pg');
 
 
 // 生成私鑰
@@ -23,12 +14,12 @@ const getPublicKey = (privateKey) => {
 };
 
 // 設置初始餘額
-const setInitialBalance = (privateKey) => {
+const setInitialBalance = () => {
   return 0;
 };
 
 // 更新餘額
-const updateBalance = (privateKey, newBalance) => {
+const updateBalance = async (privateKey, newBalance) => {
   // 檢查私鑰的合法性
   if (!isValidPrivateKey(privateKey)) {
     throw new Error("Invalid private key");
@@ -37,49 +28,60 @@ const updateBalance = (privateKey, newBalance) => {
   // 從私鑰中獲取公鑰
   const publicKey = getPublicKey(privateKey);
 
-  // 從資料庫中獲取當前餘額
-  let currentBalance = 0;
-  db.get(`SELECT balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
-    if (err) throw err;
-    if (row) {
-      currentBalance = row.balance;
-    }
-  });
-
   // 檢查新餘額是否合法
   if (newBalance < 0) {
     throw new Error("新餘額不能是負數");
   }
 
-  // 更新餘額
-  db.run(`
-    INSERT OR REPLACE INTO wallets (public_key, private_key, balance)
-    VALUES (?, ?, ?)
-  `, [publicKey, privateKey,newBalance], (err) => {
-    if (err) throw err;
-  });
-
-  // 返回新的餘額
-  return newBalance;
-};
-
-const isValidPrivateKey = (privateKey) => {
-  // 實現私鑰合法性檢查的具體邏輯
-  // 例如,可以檢查私鑰的格式和長度是否正確
-  return true;
-};
-
-const checkWallet = (publicKey) => {
-db.get(`SELECT public_key,private_key,balance FROM wallets WHERE public_key = ?`, [publicKey], (err, row) => {
-    if (err) throw err;
-    if (row) {
-      return {
-        puk: row.public_key,
-        prk: row.private_key,
-        balance: row.balance
-      };
+  try {
+    // 從資料庫中獲取當前餘額
+    const res = await client.query(`SELECT balance FROM wallets WHERE public_key = $1`, [publicKey]);
+    
+    if (res.rows.length === 0) {
+      throw new Error("Wallet not found");
     }
-});
+
+    // 更新餘額
+    await client.query(`
+      UPDATE wallets SET balance = $1 WHERE public_key = $2
+    `, [newBalance, publicKey]);
+
+    console.log(`Updated balance for ${publicKey}: ${newBalance}`);
+    return newBalance;
+  } catch (err) {
+    console.error('Error updating balance', err.stack);
+    throw err;
+  }
+};
+
+// 檢查私鑰合法性
+const isValidPrivateKey = (privateKey) => {
+  return typeof privateKey === 'string' && privateKey.length === 64; // 假設私鑰是 64 字符長度
+};
+
+// 檢查錢包
+const checkWallet = async (publicKey) => {
+  try {
+    const res = await client.query(`SELECT public_key, private_key, balance FROM wallets WHERE public_key = $1`, [publicKey]);
+    
+    if (res.rows.length === 0) {
+      throw new Error("Wallet not found");
+    }
+
+    return {
+      publicKey: res.rows[0].public_key,
+      privateKey: res.rows[0].private_key,
+      balance: res.rows[0].balance
+    };
+  } catch (err) {
+    console.error('Error checking wallet', err.stack);
+    throw err;
+  }
+};
+
+// 連接到 PostgreSQL
+const connectToDatabase = async () => {
+  await client.connect();
 };
 
 module.exports = {
@@ -87,5 +89,6 @@ module.exports = {
   getPublicKey,
   setInitialBalance,
   updateBalance,
-  checkWallet
+  checkWallet,
+  connectToDatabase,
 };
