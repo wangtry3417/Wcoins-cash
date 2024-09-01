@@ -1,6 +1,6 @@
 const elliptic = require('elliptic');
 const ec = new elliptic.ec('secp256k1');
-const { Client } = require('pg');
+const { client } = require('../config');
 
 
 // 生成私鑰
