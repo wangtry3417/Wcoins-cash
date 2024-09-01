@@ -1,4 +1,4 @@
-const crypto = require("./crypto/crypto");
+const { sha256 } = require("./crypto/sha256");
 const wallet = require("./wallet/wallet");
 const { client } = require("./config");
 
