@@ -8,7 +8,7 @@ git clone https://github.com/wangtry3417/Wcoins-cash.git
 ```
 2: Install modules
 ``` bash
-npm i crypto sqlite elliptic
+npm i crypto pg elliptic
 ```
 3: Run src/index.js:
 ```
