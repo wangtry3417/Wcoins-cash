@@ -1,33 +1,29 @@
 const crypto = require("./crypto/crypto");
 const wallet = require("./wallet/wallet");
-const address = require("./wallet/address");
-const sqlite3 = require('sqlite3').verbose();
-var db;
-try {
-  db = new sqlite3.Database('./wch.db');
-} catch (err) {
-  console.error('Error opening database:', err);
-  // 在此處處理錯誤,例如退出程式或嘗試重新連接
-}
+const { client } = require("./config");
 
-// 建立資料表
-db.run(`
-  CREATE TABLE IF NOT EXISTS wallets (
-    public_key TEXT PRIMARY KEY,
-    private_key TEXT NOT NULL,
-    balance DECIMAL(18,8) NOT NULL
-  )
-`);
+const { Client } = require('pg');
 
-key = wallet.generatePrivateKey()
-pk = wallet.getPublicKey(key)
-console.log("publicKey: "+pk)
-console.log("privateKey: "+key)
-wallet.updateBalance(key,100)
-console.log(wallet.checkWallet(key))
+const run = async () => {
+  try {
+    await client.connect();
+    console.log('Connected to PostgreSQL!');
 
-module.exports = {
-  crypto,
-  wallet,
-  address
-}
+    // 創建表的 SQL 命令
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS wallets (
+        public_key TEXT PRIMARY KEY,
+        private_key TEXT NOT NULL,
+        balance DECIMAL(18,8) NOT NULL
+      );
+    `);
+
+    console.log('Table created or already exists.');
+  } catch (err) {
+    console.error('Error creating table', err.stack);
+  } finally {
+    await client.end();
+  }
+};
+
+run();
