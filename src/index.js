@@ -2,8 +2,6 @@ const crypto = require("./crypto/crypto");
 const wallet = require("./wallet/wallet");
 const { client } = require("./config");
 
-const { Client } = require('pg');
-
 const run = async () => {
   try {
     await client.connect();
