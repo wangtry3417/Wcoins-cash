@@ -65,7 +65,7 @@ const checkWallet = async (publicKey) => {
     const res = await client.query(`SELECT public_key, private_key, balance FROM wallets WHERE public_key = $1`, [publicKey]);
     
     if (res.rows.length === 0) {
-      throw new Error("Wallet not found");
+      throw new Error("找不到錢包");
     }
 
     return {
