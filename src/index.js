@@ -5,8 +5,6 @@ const { client } = require("./config");
 
 const run = async () => {
   try {
-    await client.connect();
-    console.log('成功連接至 PostgreSQL!');
     createAcc();
   } catch (err) {
     console.error('建立資料表錯誤：', err.stack);
