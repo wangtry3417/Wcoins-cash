@@ -14,8 +14,6 @@ const createAcc = async () => {
     console.log('已經建立了新帳戶');
   } catch (err) {
     console.error('建立帳戶錯誤：', err.stack);
-  } finally {
-    await client.end();
   }
 };
 
