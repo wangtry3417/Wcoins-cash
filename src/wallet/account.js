@@ -8,7 +8,7 @@ const createAcc = async () => {
 
     // 創建帳戶的 SQL 命令
     await client.query(`
-      INSERT INTO public.wallets (public_key, private_key, balance) VALUES ('${puk}', '${prk}','0');
+      INSERT INTO public.wallets (public_key, private_key, balance) VALUES ('${puk}', '${prk}','21000000');
     `);
 
     console.log('已經建立了新帳戶');
