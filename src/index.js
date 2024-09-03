@@ -5,8 +5,9 @@ const { client } = require("./config");
 
 const run = async () => {
   try {
-    console.log(wallet.generatePrivateKey());
-    console.log(wallet.getPublicKey());
+    var prk = wallet.generatePrivateKey();
+    console.log(prk);
+    console.log(wallet.getPublicKey(prk));
   } catch (err) {
     console.error('建立資料表錯誤：', err.stack);
   } finally {
