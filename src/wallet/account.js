@@ -5,7 +5,7 @@ const createAcc = async () => {
   var prk = generatePrivateKey();
   var puk = getPublicKey(prk);
   try {
-
+    await client.connect();
     // 創建帳戶的 SQL 命令
     await client.query(`
       INSERT INTO public.wallets (public_key, private_key, balance) VALUES ('${puk}', '${prk}','21000000');
