@@ -10,7 +10,8 @@ const run = async () => {
     // 創建表的 SQL 命令
     await client.query(`
       CREATE TABLE IF NOT EXISTS wallets (
-        public_key TEXT PRIMARY KEY,
+        id TEXT PRIMARY KEY,
+        public_key TEXT NOT NULL,
         private_key TEXT NOT NULL,
         balance DECIMAL(18,8) NOT NULL
       );
