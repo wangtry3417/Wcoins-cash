@@ -1,7 +1,7 @@
 const { generatePrivateKey,getPublicKey } = require("./wallet");
 const { client } = require("../config");
 
-const createAcc = () => {
+const createAcc = async () => {
   var prk = generatePrivateKey();
   var puk = getPublicKey(prk);
   try {
