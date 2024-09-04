@@ -5,11 +5,12 @@ const { client } = require("./config");
 
 const run = async () => {
   try {
-    console.log(wallet.updateBalance("e7f29bf39a3fc90e4a0277fe226893667aaecd38362b197ff7c56bfc9ffb0fce",21000000))
+    await wallet.updateBalance("e7f29bf39a3fc90e4a0277fe226893667aaecd38362b197ff7c56bfc9ffb0fce",21000000)
+    console.log("操作成功");
   } catch (err) {
     console.error('操作錯誤：', err.stack);
   } finally {
-    await client.end();
+    // await client.end();
   }
 };
 
